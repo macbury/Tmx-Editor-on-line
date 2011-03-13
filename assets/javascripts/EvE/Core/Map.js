@@ -61,22 +61,29 @@ $.extend(Map.prototype, {
     var self = this;
     var layers = this.content.find("layer");
     layers.each(function(z, element){
+      //if (z == 0) { return true };
       var layer = $(element);
       var data = layer.find("data");
       
       if (data.attr("encoding") == "base64") {
-        var tiles_gids = stringToBytes(Base64.decode(data.text()));
-        
-        var i = 0;
-        for (var row=0; row < self.rows; row++) {
-          for (var column=0; column < self.columns; column++) {
-            var tile_id =  tiles_gids[i] | tiles_gids[i + 1] << 8 | tiles_gids[i+2] << 16 | tiles_gids[i+3] << 24;
-            //console.log("GID: "+ tile_id);
-            var tile = self.tilesets[tile_id].get_sprite(tile_id, column*self.tile_size, row*self.tile_size, z);
-          
-            self.viewport.push(tile);
+        $.post("/base64", { data: data.text() }, function(resp) {
+
+          var tiles_gids = eval(resp);
+          //console.log(tiles_gids);
+          var i = 0;
+          for (var row=0; row < self.rows; row++) {
+            for (var column=0; column < self.columns; column++) {
+              var tile_id =  tiles_gids[i];
+              i += 1;
+              //console.log("GID: "+ tile_id);
+              var tile = self.tilesets[tile_id];
+              if (tile) {
+                self.viewport.push(tile.get_sprite(tile_id, column*self.tile_size, row*self.tile_size, z));
+              };
+              
+            };
           };
-        };
+        });
 
       }
     });

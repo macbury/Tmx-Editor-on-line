@@ -4,10 +4,28 @@ function EditorStage () {
 
 $.extend(EditorStage.prototype, Stage.prototype);
 $.extend(EditorStage.prototype, {
+  waypoints: [],
   start: function(){
     var self = this;    
+    this.waypoints = [];
     this.engine.clearColor = "#cccccc";
     this.engine.timer.duration = 10;
+    
+    $("#screen").mouseup(function(e) {
+        var x = parseInt((self.viewport.x + e.clientX - $('.content').position().left) / self.map.tile_size);
+        var y = parseInt((self.viewport.y + e.clientY - $('.content').position().top) / self.map.tile_size);
+        
+        var px = x * self.map.tile_size;
+        var py = y * self.map.tile_size;
+        var waypoint = new Waypoint(px,py);
+        if (self.waypoints.length > 0) {
+          var lastWaypoint = self.waypoints[self.waypoints.length - 1];
+          lastWaypoint.addChild(waypoint);
+        };
+        self.waypoints.push(waypoint);
+        console.log(x +', '+ y);
+    });
+    
     $(window).resize(function () {
       var width = $('.content').width();
       var height = $('.content').height();
@@ -15,6 +33,8 @@ $.extend(EditorStage.prototype, {
       $("#screen").height(height);
       $("#screen").attr("width", width);
       $("#screen").attr("height", height);
+      
+      
       self.engine.width = width;
       self.engine.height = height;
       
@@ -88,6 +108,16 @@ $.extend(EditorStage.prototype, {
         { x: this.map.width() * this.engine.scale- this.viewport.x , y: y*this.map.tile_size * this.engine.scale - this.viewport.y }
       ]);  
     }
+    
+    for (var i=0; i < this.waypoints.length; i++) {
+      var waypoint = this.waypoints[i];
+      if (waypoint.parent) {
+        this.engine.drawLinePath('rgba(1.0, 0.0, 0, 0.9)', 4, [
+          { x: this.viewport.screenX(waypoint.parent.x+16), y: this.viewport.screenY(waypoint.parent.y+16) },
+          { x: this.viewport.screenX(waypoint.x+16), y: this.viewport.screenY(waypoint.y+16) }
+        ]);
+      }
+    };
   },
   
   end: function(){

@@ -1,7 +1,7 @@
 function Chipset (options) {
   var self = this;
   $.extend(this, options);
-  this.firstGid = parseInt(this.data.attr("firstgid")) - 1;
+  this.firstGid = parseInt(this.data.attr("firstgid"));
   this.tileWidth = parseInt(this.data.attr("tilewidth"));
   this.tileHeight = parseInt(this.data.attr("tileheight"));
   this.load();
@@ -24,6 +24,8 @@ $.extend(Chipset.prototype, {
     var self = this;
     image.onload = function () {
       self.image = image;
+      self.width = image.width;
+      self.height = image.height;
       self.build_tiles();
       self.onLoad();
     }
