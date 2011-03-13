@@ -1,0 +1,14 @@
+<map columns="40" rows="40">
+  <chipset id="0" src="/tilesets/TileA.xml" />
+  <layer zindex="0">
+    <tile chipset_id="0" id="0" x="0" y="0" />
+    <tile chipset_id="0" id="6" x="32" y="0" />
+    <tile chipset_id="0" id="10" x="64" y="0" />
+    <tile chipset_id="0" id="1" x="32" y="32" />
+    <tile chipset_id="0" id="2" x="64" y="64" />
+    <tile chipset_id="0" id="3" x="96" y="96" />
+  </layer>
+  <layer zindex="10">
+    <tile chipset_id="0" id="2" x="32" y="32" />
+  </layer>
+</map>

@@ -1,0 +1,57 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+  <title>EvE</title> 
+  <link rel='stylesheet' href='/stylesheets/jquery-ui.css' type='text/css' media="screen"/> 
+  <link rel='stylesheet' href='/stylesheets/editor.css' type='text/css' media="screen"/> 
+  <% @javascripts.each do |file| %>
+    <script type="text/javascript" charset="utf-8" src="<%= "#{file}" %>"></script>
+  <% end %>
+  
+  <script type="text/javascript" charset="utf-8">
+    var engine = null;
+    $(document).ready(function () {
+      var editor_stage = new EditorStage();
+      
+      engine = new EvE("#screen");
+      engine.debug = true;
+      engine.stageManager.start(editor_stage);
+    });
+  </script>
+</head> 
+<body> 
+
+<div id="toolbar" class="ui-widget-header">
+  <button id="new">New</button>
+  <button id="open">Open</button>
+  <button id="save">Save</button>
+  
+  <span id="brush">
+    <input type="radio" id="pencil" name="brush" checked="checked" /><label for="pencil">Pencil</label>
+    <input type="radio" id="fill" name="brush" /><label for="fill">Fill</label>
+  </span>
+
+  <span id="scale">
+    <input type="radio" id="scale1" name="scale" checked="checked" value="1.0" /><label for="scale1">1/1</label>
+    <input type="radio" id="scale2" name="scale" value="0.75" /><label for="scale2">1/2</label>
+    <input type="radio" id="scale3" name="scale" value="0.5" /><label for="scale3">1/4</label>
+    <input type="radio" id="scale4" name="scale" value="0.2" /><label for="scale4">1/8</label>
+  </span>
+</div>
+
+<div class="sidebar">
+  <div class="tilesets">
+
+  </div>
+</div>
+
+<div class="content">
+  <canvas id="screen" width="800" height="600"></canvas>  
+</div>
+<div class="scroller_emulator">
+  <div></div>
+</div>
+<div class="clear"></div>
+ 
+</body> 
+</html> 

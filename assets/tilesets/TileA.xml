@@ -1,0 +1,5 @@
+<tileset src="/images/TileA2.png" columns="16" rows="14" type="no-repeat">
+  <collsion>
+
+  </collision>
+</tileset>

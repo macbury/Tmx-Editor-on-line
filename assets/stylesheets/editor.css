@@ -1,0 +1,52 @@
+body {
+  padding: 0;
+  margin: 0;
+  font: 10px Verdana, sans-serif;
+  background: #F3F3F3;
+  margin: 0;
+  overflow: hidden;
+}
+
+#toolbar {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  padding: 4px;
+}
+
+.clear { clear: both; }
+
+.sidebar {
+  position: absolute;
+  top: 38px;
+  left: 0;
+  bottom: 0;
+  width: 256px;
+
+}
+
+.sidebar .tilesets {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 300px;
+  background: #000;
+}
+
+.content {
+  position: absolute;
+  top: 38px;
+  right: 16px;
+  left: 256px;
+  bottom: 16px;
+  z-index: 1;
+}
+
+.scroller_emulator {
+  position: absolute;
+  top: 38px;
+  right: 0px;
+  left: 256px;
+  bottom: 0px;
+  z-index: 0;
+  overflow: scroll;
+}
