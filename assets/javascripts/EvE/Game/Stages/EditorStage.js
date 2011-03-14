@@ -14,8 +14,8 @@ $.extend(EditorStage.prototype, {
     $("#screen").rightClick(function(e) {
       var x = parseInt((self.viewport.x + e.clientX - $('.content').position().left) / self.map.tile_size);
       var y = parseInt((self.viewport.y + e.clientY - $('.content').position().top) / self.map.tile_size);
-      var px = x * self.map.tile_size;
-      var py = y * self.map.tile_size;
+      var px = x * self.map.tile_size + self.map.tile_size / 2;
+      var py = y * self.map.tile_size + self.map.tile_size / 2;
       
       for (var i=0; i < self.waypoints.length; i++) {
         var w = self.waypoints[i];
@@ -32,8 +32,8 @@ $.extend(EditorStage.prototype, {
         var x = parseInt((self.viewport.x + e.clientX - $('.content').position().left) / self.map.tile_size);
         var y = parseInt((self.viewport.y + e.clientY - $('.content').position().top) / self.map.tile_size);
         
-        var px = x * self.map.tile_size;
-        var py = y * self.map.tile_size;
+        var px = x * self.map.tile_size + self.map.tile_size / 2;
+        var py = y * self.map.tile_size + self.map.tile_size / 2;
         
         var haveSelectedWaypoint = false;
         
@@ -49,13 +49,14 @@ $.extend(EditorStage.prototype, {
         if (!haveSelectedWaypoint) {
           var waypoint = new Waypoint(px,py);
           waypoint.id = self.waypoints.length;
+          waypoint.name = "Waypoint "+waypoint.id;
           if (self.selectedWaypoint) {
             self.selectedWaypoint.addChild(waypoint);
           };
           self.selectedWaypoint = waypoint;
           window.location.hash = "waypoint_"+self.selectedWaypoint.id;
           self.waypoints.push(waypoint);
-          $('#waypoints').append("<li id='"+"waypoint_"+self.selectedWaypoint.id+"'>Waypoint "+waypoint.id+"</li>");
+          $('#waypoints').append("<li id='"+"waypoint_"+self.selectedWaypoint.id+"'>"+waypoint.name+"</li>");
 
         }
         console.log(x +', '+ y);
@@ -161,17 +162,17 @@ $.extend(EditorStage.prototype, {
         ]);
       }*/
 
-      this.engine.fillRect(wayColor,  this.viewport.screenX(waypoint.x+12),  this.viewport.screenY(waypoint.y+12), 8,8);
+      this.engine.fillRect(wayColor,  this.viewport.screenX(waypoint.x-4),  this.viewport.screenY(waypoint.y-4), 8,8);
       
       for (var a=0; a < waypoint.children.length; a++) {
         var child = waypoint.children[a];
         
         this.engine.drawLinePath(wayColor, 2, [
-          { x: this.viewport.screenX(child.x+16), y: this.viewport.screenY(child.y+16) },
-          { x: this.viewport.screenX(waypoint.x+16), y: this.viewport.screenY(waypoint.y+16) }
+          { x: this.viewport.screenX(child.x), y: this.viewport.screenY(child.y) },
+          { x: this.viewport.screenX(waypoint.x), y: this.viewport.screenY(waypoint.y) }
         ]);
         
-        this.engine.fillRect(wayColor,  this.viewport.screenX(child.x+12),  this.viewport.screenY(child.y+12), 8,8);
+        this.engine.fillRect(wayColor,  this.viewport.screenX(child.x-4),  this.viewport.screenY(child.y-4), 8,8);
       };
     };
   },

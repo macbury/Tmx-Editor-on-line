@@ -40,13 +40,37 @@
 </div>
 
 <div class="sidebar">
-  <!--
-  <div class="tilesets">
-
-  </div>-->
-  <ul id="waypoints" class="list">
+  
+  <div class="top">
+    <ul id="waypoints" class="list"></ul>
+  </div>
+  <div class="bottom">
+    <fieldset id="" class="">
+      <legend>Waypoint Propeties</legend>
+      <label for="">Name</label><input type="text" name="" value="Waypoint 1" id=""/><br />
+      
+      <label for="point_x">Position</label><input type="text" name="point_x" value="0:0" id="point_x"/><br/>
+      <label>Type</label>
+      <select>
+        <option>Point</option>
+        <option>Path</option>
+      </select><br/>
+      <label for="">Control Point 1</label><input type="text" name="" value="0:0" id=""/><br/>
+      <label for="">Control Point 2</label><input type="text" name="" value="0:0" id=""/><br/>
+    </fieldset>
     
-  </ul>
+    <fieldset id="" class="">
+      <legend>Connections</legend>
+      <label>Parent</label>
+      <select>
+        <option>None</option>
+      </select><br/>
+      <label>Children</label>
+      <select multiple="multiple">
+        <option>None</option>
+      </select>
+    </fieldset>
+  </div>
 </div>
 
 <div class="content">

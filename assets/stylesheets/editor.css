@@ -22,14 +22,46 @@ body {
   left: 0;
   bottom: 0;
   width: 256px;
-  overflow-y: scroll;
+
 }
 
-.sidebar .tilesets {
+.sidebar .top {
   overflow-y: scroll;
   overflow-x: hidden;
   height: 300px;
-  background: #000;
+  background: #fff;
+}
+
+.sidebar .bottom {
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: absolute;
+  top: 301px;
+  bottom: 0px;
+  width: 256px;
+  background: #DEEDF7;
+  border-top: 1px solid #AED0EA;
+}
+
+fieldset {
+  margin: 5px;
+  border: 2px solid #AED0EA;
+  border-radius: 4px;
+}
+
+fieldset legend {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+fieldset label {
+  display: block;
+  margin: 5px 3px;
+  font-size: 11px;
+}
+
+fieldset select, fieldset input[type="text"] {
+  width: 100%;
 }
 
 .content {
