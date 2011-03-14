@@ -153,15 +153,26 @@ $.extend(EditorStage.prototype, {
       } else {
         wayColor = "green";
       }
-      
+      /*
       if (waypoint.parent) {
         this.engine.drawLinePath(wayColor, 2, [
           { x: this.viewport.screenX(waypoint.parent.x+16), y: this.viewport.screenY(waypoint.parent.y+16) },
           { x: this.viewport.screenX(waypoint.x+16), y: this.viewport.screenY(waypoint.y+16) }
         ]);
-      }
+      }*/
 
       this.engine.fillRect(wayColor,  this.viewport.screenX(waypoint.x+12),  this.viewport.screenY(waypoint.y+12), 8,8);
+      
+      for (var a=0; a < waypoint.children.length; a++) {
+        var child = waypoint.children[a];
+        
+        this.engine.drawLinePath(wayColor, 2, [
+          { x: this.viewport.screenX(child.x+16), y: this.viewport.screenY(child.y+16) },
+          { x: this.viewport.screenX(waypoint.x+16), y: this.viewport.screenY(waypoint.y+16) }
+        ]);
+        
+        this.engine.fillRect(wayColor,  this.viewport.screenX(child.x+12),  this.viewport.screenY(child.y+12), 8,8);
+      };
     };
   },
   
