@@ -10,19 +10,54 @@ $.extend(EditorStage.prototype, {
     this.waypoints = [];
     this.engine.clearColor = "#cccccc";
     this.engine.timer.duration = 10;
+    this.selectedWaypoint = null;
+    $("#screen").rightClick(function(e) {
+      var x = parseInt((self.viewport.x + e.clientX - $('.content').position().left) / self.map.tile_size);
+      var y = parseInt((self.viewport.y + e.clientY - $('.content').position().top) / self.map.tile_size);
+      var px = x * self.map.tile_size;
+      var py = y * self.map.tile_size;
+      
+      for (var i=0; i < self.waypoints.length; i++) {
+        var w = self.waypoints[i];
+        if (w.x == px && w.y == py) {
+          self.selectedWaypoint.addChild(w);
+          self.waypoints.push(w);
+          break;
+        }
+      };
+    });
     
-    $("#screen").mouseup(function(e) {
+    $("#screen").click(function(e) {
+
         var x = parseInt((self.viewport.x + e.clientX - $('.content').position().left) / self.map.tile_size);
         var y = parseInt((self.viewport.y + e.clientY - $('.content').position().top) / self.map.tile_size);
         
         var px = x * self.map.tile_size;
         var py = y * self.map.tile_size;
-        var waypoint = new Waypoint(px,py);
-        if (self.waypoints.length > 0) {
-          var lastWaypoint = self.waypoints[self.waypoints.length - 1];
-          lastWaypoint.addChild(waypoint);
+        
+        var haveSelectedWaypoint = false;
+        
+        for (var i=0; i < self.waypoints.length; i++) {
+          var w = self.waypoints[i];
+          if (w.x == px && w.y == py) {
+            self.selectedWaypoint = w;
+            haveSelectedWaypoint = true;
+            break;
+          }
         };
-        self.waypoints.push(waypoint);
+        
+        if (!haveSelectedWaypoint) {
+          var waypoint = new Waypoint(px,py);
+          waypoint.id = self.waypoints.length;
+          if (self.selectedWaypoint) {
+            self.selectedWaypoint.addChild(waypoint);
+          };
+          self.selectedWaypoint = waypoint;
+          window.location.hash = "waypoint_"+self.selectedWaypoint.id;
+          self.waypoints.push(waypoint);
+          $('#waypoints').append("<li id='"+"waypoint_"+self.selectedWaypoint.id+"'>Waypoint "+waypoint.id+"</li>");
+
+        }
         console.log(x +', '+ y);
     });
     
@@ -111,12 +146,22 @@ $.extend(EditorStage.prototype, {
     
     for (var i=0; i < this.waypoints.length; i++) {
       var waypoint = this.waypoints[i];
+      var wayColor = "red";
+      
+      if ((this.selectedWaypoint.x == waypoint.x && this.selectedWaypoint.y == waypoint.y)) {
+        wayColor = "blue";
+      } else {
+        wayColor = "green";
+      }
+      
       if (waypoint.parent) {
-        this.engine.drawLinePath('rgba(1.0, 0.0, 0, 0.9)', 4, [
+        this.engine.drawLinePath(wayColor, 2, [
           { x: this.viewport.screenX(waypoint.parent.x+16), y: this.viewport.screenY(waypoint.parent.y+16) },
           { x: this.viewport.screenX(waypoint.x+16), y: this.viewport.screenY(waypoint.y+16) }
         ]);
       }
+
+      this.engine.fillRect(wayColor,  this.viewport.screenX(waypoint.x+12),  this.viewport.screenY(waypoint.y+12), 8,8);
     };
   },
   

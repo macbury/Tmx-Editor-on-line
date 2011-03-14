@@ -22,7 +22,7 @@ body {
   left: 0;
   bottom: 0;
   width: 256px;
-
+  overflow-y: scroll;
 }
 
 .sidebar .tilesets {
@@ -49,4 +49,20 @@ body {
   bottom: 0px;
   z-index: 0;
   overflow: scroll;
+}
+
+.list {
+  list-style: none inside;
+  margin: 0;
+  padding: 0;
+}
+
+.list li {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.list  li:last-child {
+  color: #fff;
+  background-color: #2694e8;
 }
