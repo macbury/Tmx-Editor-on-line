@@ -92,9 +92,10 @@ fieldset select, fieldset input[type="text"] {
 .list li {
   padding: 5px 10px;
   font-size: 12px;
+  cursor: pointer;
 }
 
-.list  li:last-child {
+.list  li.selected {
   color: #fff;
   background-color: #2694e8;
 }

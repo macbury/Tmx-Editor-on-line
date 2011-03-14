@@ -33,6 +33,15 @@ $.extend(EvE.prototype, {
     this.drawCall += 1;
   },
   
+  drawCurve: function(color, width,sx,sy,ex,ey, cpx1, cpy1, cpx2, cpy2){
+    this.context.lineWidth = width;
+    this.context.strokeStyle = color;
+    this.context.beginPath();
+    this.context.moveTo(sx, sy);
+    this.context.bezierCurveTo(cpx1, cpy1, cpx2, cpy2, ex, ey);
+    this.context.stroke();
+  },
+  
   drawLinePath: function(color, width, points){
     this.context.lineWidth = width;
     this.context.strokeStyle = color;

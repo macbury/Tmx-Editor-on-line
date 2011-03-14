@@ -47,26 +47,29 @@
   <div class="bottom">
     <fieldset id="" class="">
       <legend>Waypoint Propeties</legend>
-      <label for="">Name</label><input type="text" name="" value="Waypoint 1" id=""/><br />
+      <label for="waypoint_name">Name</label><input type="text" name="" value="Waypoint 1" id="waypoint_name"/><br />
       
-      <label for="point_x">Position</label><input type="text" name="point_x" value="0:0" id="point_x"/><br/>
-      <label>Type</label>
-      <select>
-        <option>Point</option>
-        <option>Path</option>
+      <label for="waypoin_position">Position</label><input type="text" name="point_x" value="0:0" id="waypoin_position"/><br/>
+      <label for="waypoint_type">Type</label>
+      <select id="waypoint_type">
+        <option value="0">Point</option>
+        <option value="1">Path</option>
       </select><br/>
-      <label for="">Control Point 1</label><input type="text" name="" value="0:0" id=""/><br/>
-      <label for="">Control Point 2</label><input type="text" name="" value="0:0" id=""/><br/>
+      <div id="control_points">
+        <label for="waypoint_control_point1">Control Point 1</label><input type="text" name="" value="0:0" id="waypoint_control_point1"/><br/>
+        <label for="waypoint_control_point2">Control Point 2</label><input type="text" name="" value="0:0" id="waypoint_control_point2"/><br/>
+      </div>
+
     </fieldset>
     
     <fieldset id="" class="">
       <legend>Connections</legend>
-      <label>Parent</label>
-      <select>
+      <label for="waypoint_parent">Parent</label>
+      <select id="waypoint_parent">
         <option>None</option>
       </select><br/>
-      <label>Children</label>
-      <select multiple="multiple">
+      <label for="waypoint_children">Children</label>
+      <select multiple="multiple" id="waypoint_children">
         <option>None</option>
       </select>
     </fieldset>
