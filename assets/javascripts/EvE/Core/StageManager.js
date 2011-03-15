@@ -26,7 +26,7 @@ $.extend(StageManager.prototype, {
   end: function(){
     if (this.runningStage) {
       this.context.log("Ending Stage:");
-      this.context.log(this.runningStage());
+      this.context.log(this.runningStage);
       this.runningStage.end();
     }
     this.runningStage = null;

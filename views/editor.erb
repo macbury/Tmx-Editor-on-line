@@ -11,10 +11,11 @@
   <script type="text/javascript" charset="utf-8">
     var engine = null;
     $(document).ready(function () {
-      var editor_stage = new EditorStage();
       
       engine = new EvE("#screen");
       engine.debug = true;
+      
+      var editor_stage = new EditorStage("/maps/test_compresed.tmx");
       engine.stageManager.start(editor_stage);
     });
   </script>
@@ -85,6 +86,12 @@
   <div></div>
 </div>
 <div class="clear"></div>
- 
+<div style="display:none">
+  <div id="open_dialog">
+    <ul class="list" id="files_to_open">
+      <li>Test.tmx</li>
+    </ul>
+  </div>
+</div>
 </body> 
 </html> 

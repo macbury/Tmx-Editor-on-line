@@ -1,6 +1,8 @@
 require "rubygems"
 require "sinatra"
 require 'stringio'
+require "yaml"
+require "json"
 set :public, File.dirname(__FILE__) + '/assets'
 set :views, ['views']
 
@@ -11,6 +13,11 @@ get "/" do
   
   @javascripts = @javascripts.flatten
   erb :editor
+end
+
+get "/files" do
+  @files = Dir.glob(File.join([File.dirname(__FILE__), "assets/maps/*.tmx"])).map { |file| { :name => File.basename(file), :url => file.gsub(File.join([File.dirname(__FILE__), "assets"]), "") } }
+  @files.to_json
 end
 
 post "/base64" do
@@ -29,7 +36,10 @@ post "/base64" do
 end
 
 post "/save" do
+  waypoints = []
   params[:waypoints].each do |index, waypoint|
-    
+    waypoints << waypoint
   end
+  
+  waypoints.to_yaml
 end

@@ -166,6 +166,7 @@ var WaypointBrush = new Brush({
   
   mouseUp: function(px, py) {
     this.selectedHandler = null;
+    $("#screen").css({ cursor: "auto" });
   },
   
   mouseMove: function(px, py) {
@@ -193,6 +194,7 @@ var WaypointBrush = new Brush({
         haveSelectedWaypoint = true;
         self.dy = py;
         self.dx = px;
+        $("#screen").css({ cursor: "move" });
         break;
       } else if (rect.in(w.x, w.y)) {
         self.selectedWaypoint = w;
@@ -236,10 +238,13 @@ var WaypointBrush = new Brush({
       var waypoint = this.waypoints[i];
       var wayColor = "red";
       
-      if ((this.selectedWaypoint.x == waypoint.x && this.selectedWaypoint.y == waypoint.y)) {
+      //if (this.selectedHandler == waypoint || waypoint.parent && this.selectedHandler == waypoint.parent ) {
+      //  wayColor = "pink";
+      //} else
+      if ((this.selectedWaypoint == waypoint || this.selectedWaypoint.parent == waypoint)) {
         wayColor = "blue";
       } else {
-        wayColor = "green";
+        wayColor = "red";
       }
       /*
       if (waypoint.parent) {
