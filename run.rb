@@ -27,3 +27,9 @@ post "/base64" do
   
   tiles.inspect
 end
+
+post "/save" do
+  params[:waypoints].each do |index, waypoint|
+    
+  end
+end

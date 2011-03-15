@@ -44,7 +44,7 @@
   <div class="top">
     <ul id="waypoints" class="list"></ul>
   </div>
-  <div class="bottom">
+  <div class="bottom" id="inspector">
     <fieldset id="" class="">
       <legend>Waypoint Propeties</legend>
       <label for="waypoint_name">Name</label><input type="text" name="" value="Waypoint 1" id="waypoint_name"/><br />
@@ -59,7 +59,7 @@
         <label for="waypoint_control_point1">Control Point 1</label><input type="text" name="" value="0:0" id="waypoint_control_point1"/><br/>
         <label for="waypoint_control_point2">Control Point 2</label><input type="text" name="" value="0:0" id="waypoint_control_point2"/><br/>
       </div>
-
+      <button id="delete_current_waypoint">Delete Current Waypoint</button>
     </fieldset>
     
     <fieldset id="" class="">
@@ -72,6 +72,8 @@
       <select multiple="multiple" id="waypoint_children">
         <option>None</option>
       </select>
+      
+      <button id="delete_waypoint">Delete Waypoint</button>
     </fieldset>
   </div>
 </div>

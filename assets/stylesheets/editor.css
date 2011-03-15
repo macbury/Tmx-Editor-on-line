@@ -60,7 +60,7 @@ fieldset label {
   font-size: 11px;
 }
 
-fieldset select, fieldset input[type="text"] {
+fieldset select, fieldset input, fieldset button {
   width: 100%;
 }
 

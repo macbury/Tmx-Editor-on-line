@@ -92,6 +92,17 @@ $.extend(EditorStage.prototype, {
 			}
 		});
     
+    $( "#save" ).click(function(){
+      var data = {};
+      data["waypoints"] = WaypointBrush.dump();
+      
+      var postData = $.param(data);
+      
+      $.post("/save", postData, function(){
+        console.log("saved!");
+      });
+    });
+    
 		$( "#open" ).button({
 			text: false,
 			icons: {
@@ -115,6 +126,7 @@ $.extend(EditorStage.prototype, {
       onLoad: function(){
         $(window).trigger("resize");
         WaypointBrush.config(self);
+        
       },
     });
     

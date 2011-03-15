@@ -9,8 +9,65 @@ var WaypointBrush = new Brush({
   dx: 0,
   dy: 0,
   
+  dump: function(){
+    var out = [];
+    for (var i=0; i < this.waypoints.length; i++) {
+      out.push(this.waypoints[i].dump());
+    };
+    
+    return out;
+  },
+  
   init: function(){
     var self = this;
+    
+    $("#waypoint_control_point1").live("change", function(){
+      if (self.selectedHandler == null) {
+        var cords = Waypoint.parseCords($(this).val());
+        self.selectedWaypoint.cpx = cords.x;
+        self.selectedWaypoint.cpy = cords.y;
+      }
+    });
+    
+    $("#waypoin_position").live("change", function(){
+      var cords = Waypoint.parseCords($(this).val());
+      self.selectedWaypoint.x = cords.x;
+      self.selectedWaypoint.y = cords.y;
+    });
+    
+    $("#waypoint_control_point2").live("change", function(){
+      if (self.selectedHandler == null && self.selectedWaypoint.parent != null) {
+        var cords = Waypoint.parseCords($(this).val());
+        self.selectedWaypoint.parent.cpx = cords.x;
+        self.selectedWaypoint.parent.cpy = cords.y;
+      }
+    });
+    
+    $("#delete_current_waypoint").live("click", function () {
+      for (var i=0; i < self.waypoints.length; i++) {
+        var waypoint = self.waypoints[i];
+        
+        for (var a=0; a < waypoint.children.length; a++) {
+          var w = waypoint.children[a];
+          if (w == self.selectedWaypoint) {
+            delete waypoint.children[a];
+          }
+        }
+        
+        if (waypoint.parent = self.selectedWaypoint) {
+          waypoint.parent = null;
+        }
+        
+        if (waypoint == self.selectedWaypoint) {
+          delete self.waypoints[i];
+          
+        }
+      }
+      
+      self.selectedWaypoint = self.waypoints[self.waypoints.length - 1];
+      self.refresh();
+    });
+    
     $('#waypoint_type').live("change",function(){
       var val = parseInt($(this).val());
       self.selectedWaypoint.type = val;
@@ -33,13 +90,18 @@ var WaypointBrush = new Brush({
       
       self.refresh();
     });
+    
+    $("#waypoint_name").live("keyup", function(){
+      self.selectedWaypoint.name = $(this).val();
+      self.refresh();
+    });
   },
   
   refreshControlPoint: function() {
     var self = this;
     $('#waypoint_control_point1').val(self.selectedWaypoint.cpx + ":" + self.selectedWaypoint.cpy);
     
-    if(self.selectedWaypoint.havePath()) {
+    if(self.selectedWaypoint.parent) {
       $('#waypoint_control_point2').val(self.selectedWaypoint.parent.cpx + ":" + self.selectedWaypoint.parent.cpy);
     }
   },
@@ -47,6 +109,7 @@ var WaypointBrush = new Brush({
   refresh: function () {
     var self = this;
     $('#waypoints li').removeClass("selected");
+    $('#waypoints li').hide();
     $("#waypoint_parent option").remove();
     $("#waypoint_parent").append("<option>None</option>");
     
@@ -63,9 +126,19 @@ var WaypointBrush = new Brush({
       if(self.selectedWaypoint == waypoint) {
         li.addClass("selected");
       }
-      
+      li.text(waypoint.name);
+      li.show();
       $("#waypoint_parent").append(option);
     });
+    
+    $('#waypoints li:hidden').remove();
+    
+    if (self.selectedWaypoint == null) {
+      $('#inspector').hide();
+      return false;
+    } else {
+      $('#inspector').show();
+    }
     
     $('#waypoint_name').val(self.selectedWaypoint.name);
     $('#waypoin_position').val(self.selectedWaypoint.x + ":" + self.selectedWaypoint.y);

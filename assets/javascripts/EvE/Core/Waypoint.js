@@ -5,6 +5,15 @@
 Waypoint.Point = 0;
 Waypoint.Path = 1;
 
+Waypoint.parseCords = function (text) {
+  var cords = text.split(":");
+  if (cords.length == 2 ) {
+    return { x: parseInt(cords[0]), y: parseInt(cords[1]) };
+  } else {
+    return { x: 0, y: 0 };
+  }
+}
+
 function Waypoint(x,y) {
   this.x = x;
   this.y = y;
@@ -13,8 +22,35 @@ function Waypoint(x,y) {
   this.children = [];
   this.parent = null;
   this.id = 0;
-  this.name = "W";
+  this.name = "Watpoint";
   this.type = Waypoint.Point;
+}
+
+Waypoint.prototype.dump = function () {
+  var out = {};
+  out = $.extend(out, {
+    x: this.x,
+    y: this.y,
+    control_point: {
+      x: this.cpx,
+      y: this.cpy,
+    },
+    id: this.id,
+    name: this.name,
+    type: this.type,
+    children: []
+  });
+  
+  
+  for (var i=0; i < this.children.length; i++) {
+    var waypoint = this.children[i];
+    out["children"].push(waypoint.id);
+  };
+  
+  if(this.parent) {
+    out["parent"] = this.parent.id;
+  }
+  return out;
 }
 
 Waypoint.prototype.addChild = function (waypoint) {

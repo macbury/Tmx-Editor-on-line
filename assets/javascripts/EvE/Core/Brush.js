@@ -19,5 +19,6 @@ $.extend(Brush.prototype, {
     this.viewport = stage.viewport;
     this.engine = stage.engine;
     this.stage = stage;
+    this.refresh();
   },
 });
