@@ -7,6 +7,8 @@ function Rect(x,y, width, height) {
   this.y = y;
   this.x2 = width + x;
   this.y2 = height + y;
+  this.width = width;
+  this.height = height;
   
 }
 

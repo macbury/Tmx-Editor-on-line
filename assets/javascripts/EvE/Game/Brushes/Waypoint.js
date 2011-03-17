@@ -10,6 +10,7 @@ var WaypointBrush = new Brush({
   dy: 0,
   cx: 0,
   cy: 0,
+  controlRect: null,
   dump: function(){
     var out = [];
     for (var i=0; i < this.waypoints.length; i++) {
@@ -35,6 +36,11 @@ var WaypointBrush = new Brush({
       self.selectedWaypoint.x = cords.x;
       self.selectedWaypoint.y = cords.y;
     });
+    
+    $("#waypoint_quality").live("change", function(){;
+      self.selectedWaypoint.quality = parseInt($(this).val());
+    });
+    
     
     $("#waypoint_control_point2").live("change", function(){
       if (self.selectedHandler == null && self.selectedWaypoint.parent != null) {
@@ -101,7 +107,7 @@ var WaypointBrush = new Brush({
   refreshControlPoint: function() {
     var self = this;
     $('#waypoint_control_point1').val(self.selectedWaypoint.cpx + ":" + self.selectedWaypoint.cpy);
-    
+    $('#waypoint_quality').val(self.selectedWaypoint.quality);
     if(self.selectedWaypoint.parent) {
       $('#waypoint_control_point2').val(self.selectedWaypoint.parent.cpx + ":" + self.selectedWaypoint.parent.cpy);
     }
@@ -181,6 +187,7 @@ var WaypointBrush = new Brush({
     if (this.stage) {
       this.cx = this.stage.snapPoint(px)-16;
       this.cy = this.stage.snapPoint(py)-16;
+      this.controlRect = new Rect(px-4, py-4, 8,8);
     }
     
   },
@@ -189,11 +196,11 @@ var WaypointBrush = new Brush({
     var self = this;
     var haveSelectedWaypoint = false;
     var rect = new Rect(px-self.map.tile_size/2, py-self.map.tile_size/2, self.map.tile_size,self.map.tile_size);
-    var controlRect = new Rect(px-4, py-4, 8,8);
+    
     var sorted_waypoints = self.waypoints.sort(function(a,b) { return b.type - a.type; });
     for (var i=0; i < sorted_waypoints.length; i++) {
       var w = self.waypoints[i];
-      if (w.havePath() && controlRect.in(w.cpx, w.cpy)) {
+      if (w.havePath() && this.controlRect.in(w.cpx, w.cpy)) {
         console.log("Control Point handler");
         self.selectedWaypoint = w;
         self.selectedHandler = w;
@@ -256,12 +263,18 @@ var WaypointBrush = new Brush({
 
 
       this.engine.fillRect(pointColor,  this.viewport.screenX(waypoint.x-4),  this.viewport.screenY(waypoint.y-4), 8,8);
-      
+      var points = [];
       for (var a=0; a < waypoint.children.length; a++) {
         var child = waypoint.children[a];
         
         if(child.type == Waypoint.Path) {
-          this.engine.drawCurve(wayColor, 2, this.viewport.screenX(child.x), this.viewport.screenY(child.y), this.viewport.screenX(waypoint.x), this.viewport.screenY(waypoint.y), this.viewport.screenX(child.cpx), this.viewport.screenY(child.cpy), this.viewport.screenX(waypoint.cpx), this.viewport.screenY(waypoint.cpy));
+          points = this.engine.curvePoints(this.viewport.screenX(child.x), this.viewport.screenY(child.y), this.viewport.screenX(waypoint.x), this.viewport.screenY(waypoint.y), this.viewport.screenX(child.cpx), this.viewport.screenY(child.cpy), this.viewport.screenX(waypoint.cpx), this.viewport.screenY(waypoint.cpy), child.quality);
+          
+          this.engine.drawLinePath(wayColor, 2, points);
+          
+          for (var q=0; q < points.length; q++) {
+            this.engine.fillRect(pointColor, points[q].x-3, points[q].y-3, 6,6);
+          }
           
           this.engine.drawLinePath("yellow", 2, [
             { x: this.viewport.screenX(child.x), y: this.viewport.screenY(child.y) },
@@ -285,8 +298,9 @@ var WaypointBrush = new Brush({
       };
     };
     
-    if (this.engine) {
-      this.engine.fillRect("rgba(255,255,255,0.3)", this.cx, this.cy, 32, 32);
+    if (this.engine && this.controlRect) {
+      this.engine.fillRect("rgba(255,255,255,0.3)", this.viewport.screenX(this.cx), this.viewport.screenY(this.cy), 32, 32);
+      this.engine.fillRect("rgba(100,100,100,0.9)", this.viewport.screenX(this.controlRect.x), this.viewport.screenY(this.controlRect.y), this.controlRect.width, this.controlRect.height);
     }
     
   }

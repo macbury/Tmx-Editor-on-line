@@ -25,6 +25,7 @@ function Waypoint(x,y) {
   this.id = 0;
   this.name = "Watpoint";
   this.type = Waypoint.Point;
+  this.quality = 10;
 }
 
 Waypoint.prototype.dump = function () {
@@ -39,7 +40,8 @@ Waypoint.prototype.dump = function () {
     id: this.id,
     name: this.name,
     type: this.type,
-    children: []
+    children: [],
+    quality: this.quality,
   });
   
   
