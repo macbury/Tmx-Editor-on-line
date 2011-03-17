@@ -28,7 +28,7 @@ $.extend(EditorStage.prototype, {
     this.brush = WaypointBrush;
     
     this.engine.clearColor = "#cccccc";
-    this.engine.timer.duration = 10;
+    //this.engine.timer.duration = 10;
     this.selectedWaypoint = null;
     
     $("#files_to_open li").live("click", function(){
@@ -98,8 +98,7 @@ $.extend(EditorStage.prototype, {
                                    .height(self.map.height() * self.engine.scale);
       }
       
-    });    
-    
+    });
     $(window).resize();
     
     $( "#new" ).button({

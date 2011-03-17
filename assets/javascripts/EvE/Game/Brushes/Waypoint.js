@@ -8,7 +8,8 @@ var WaypointBrush = new Brush({
   selectedHandler: null,
   dx: 0,
   dy: 0,
-  
+  cx: 0,
+  cy: 0,
   dump: function(){
     var out = [];
     for (var i=0; i < this.waypoints.length; i++) {
@@ -177,6 +178,11 @@ var WaypointBrush = new Brush({
       this.dy = py;
       this.refreshControlPoint();
     }
+    if (this.stage) {
+      this.cx = this.stage.snapPoint(px)-16;
+      this.cy = this.stage.snapPoint(py)-16;
+    }
+    
   },
   
   mouseDown: function(px,py){
@@ -237,24 +243,19 @@ var WaypointBrush = new Brush({
     for (var i=0; i < this.waypoints.length; i++) {
       var waypoint = this.waypoints[i];
       var wayColor = "red";
-      
-      //if (this.selectedHandler == waypoint || waypoint.parent && this.selectedHandler == waypoint.parent ) {
-      //  wayColor = "pink";
-      //} else
+      var pointColor = "red";
+      var parentColor = "red";
       if ((this.selectedWaypoint == waypoint || this.selectedWaypoint.parent == waypoint)) {
         wayColor = "blue";
+        pointColor = "blue";
+        parentColor = "cyean";
       } else {
         wayColor = "red";
+        pointColor = "red";
       }
-      /*
-      if (waypoint.parent) {
-        this.engine.drawLinePath(wayColor, 2, [
-          { x: this.viewport.screenX(waypoint.parent.x+16), y: this.viewport.screenY(waypoint.parent.y+16) },
-          { x: this.viewport.screenX(waypoint.x+16), y: this.viewport.screenY(waypoint.y+16) }
-        ]);
-      }*/
 
-      this.engine.fillRect(wayColor,  this.viewport.screenX(waypoint.x-4),  this.viewport.screenY(waypoint.y-4), 8,8);
+
+      this.engine.fillRect(pointColor,  this.viewport.screenX(waypoint.x-4),  this.viewport.screenY(waypoint.y-4), 8,8);
       
       for (var a=0; a < waypoint.children.length; a++) {
         var child = waypoint.children[a];
@@ -278,9 +279,15 @@ var WaypointBrush = new Brush({
             { x: this.viewport.screenX(waypoint.x), y: this.viewport.screenY(waypoint.y) }
           ]);
         }
-        this.engine.fillRect(wayColor,  this.viewport.screenX(child.x-4),  this.viewport.screenY(child.y-4), 8,8);
+        
+        
+        this.engine.fillRect(pointColor,  this.viewport.screenX(child.x-4),  this.viewport.screenY(child.y-4), 8,8);
       };
     };
+    
+    if (this.engine) {
+      this.engine.fillRect("rgba(255,255,255,0.3)", this.cx, this.cy, 32, 32);
+    }
     
   }
 });

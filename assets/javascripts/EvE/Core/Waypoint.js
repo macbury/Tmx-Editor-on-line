@@ -4,6 +4,7 @@
 
 Waypoint.Point = 0;
 Waypoint.Path = 1;
+Waypoint.Spawn = 2;
 
 Waypoint.parseCords = function (text) {
   var cords = text.split(":");
